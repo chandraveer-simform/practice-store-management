@@ -1,0 +1,19 @@
+const STATUS_CODE = {
+    VALIDATION_ERROR: 400,
+    UNAUTHORIZED: 401,
+    FORBIDDEN: 403,
+    NOT_FOUND: 404,
+    SERVER_ERROR: 500,
+    CONFLICT_ERROR: 409
+}
+
+const NUMERIC_VALUES = {
+    PASSWORD_LENGHT: 5,
+    PASS_SALT_ROUNDS: 11
+}
+
+const KEYS_NAME = {
+    AUTH_TOKEN: "auth-token"
+}
+
+module.exports = { STATUS_CODE, NUMERIC_VALUES, KEYS_NAME }
