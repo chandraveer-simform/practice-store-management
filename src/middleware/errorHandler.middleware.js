@@ -3,7 +3,6 @@ const { API_RES } = require("../utils/errorMessage")
 
 const errorHandler = (err, req, res, next) => {
     const statusCode = res.statusCode ? res.statusCode : STATUS_CODE.SERVER_ERROR
-    console.log("statusCode", statusCode)
 
     switch (statusCode) {
         case STATUS_CODE.VALIDATION_ERROR: res.json({
