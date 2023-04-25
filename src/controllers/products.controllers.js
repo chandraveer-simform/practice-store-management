@@ -22,7 +22,7 @@ const createNewProduct = asyncHandler(async (req, res, nmext) => {
 // get all products list
 const getAllProducts = asyncHandler(async (req, res) => {
     try {
-        const RowDataPacket   = await getAllProductsLists()
+        const RowDataPacket = await getAllProductsLists()
         return res.status(200).json({
             products: RowDataPacket,
         })
@@ -34,12 +34,12 @@ const getAllProducts = asyncHandler(async (req, res) => {
 
 //get product by product id
 const getProductById = asyncHandler(async (req, res) => {
-    const  product_id  = req.params.id;
+    const product_id = req.params.id;
     try {
-        const [RowDataPacket] = await getProductByProductId({ product_id })
+        const result = await getProductByProductId({ product_id })
         return res.status(200).json({
             productDetails: {
-                ...RowDataPacket
+                ...result
             }
         });
     } catch (err) {

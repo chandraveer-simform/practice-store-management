@@ -17,7 +17,8 @@ const NUMERIC_VALUES = {
 }
 
 const KEYS_NAME = {
-    AUTH_TOKEN: "auth-token"
+    AUTH_TOKEN: "auth-token",
+    AUTHORIZATION:"authorization"
 }
 
 module.exports = { STATUS_CODE, NUMERIC_VALUES, KEYS_NAME }

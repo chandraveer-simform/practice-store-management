@@ -1,40 +1,27 @@
-const sql = require("../config");
+const asyncHandler = require("express-async-handler");
+const { objectReformatByKey } = require("./utils/helper");
+const { insertQuery } = require("./utils/mutations");
+const { selectQuery } = require("./utils/queries");
 
 
-const createProduct = (newProduct) => {
-    return new Promise((resolve, reject) => {
-        sql.query("INSERT INTO Products SET ?", newProduct, (err, elements) => {
-            if (err) {
-                return reject(err)
-            }
-            return resolve(newProduct)
-        })
+const createProduct = asyncHandler(async (newProduct) => {
+    return await insertQuery({ queryName: "INSERT INTO Products SET ?", values: newProduct })
+})
+
+const getAllProductsLists = asyncHandler(async () => {
+    return await selectQuery({ queryName: `SELECT * FROM Products` })
+})
+
+const getProductByProductId = asyncHandler(async ({ product_id }) => {
+    const [RowDataPacket] = await selectQuery({
+        queryName: `SELECT * FROM Products as P 
+    LEFT JOIN Brands as B ON P.brand = B.brand_id 
+    LEFT JOIN GoodsComprisesCode as G ON P.hsn_code = G.gcc_id
+    LEFT JOIN Units as U ON P.unit = U.unit_id
+    WHERE P.product_id=${product_id}`
     })
-}
-
-
-const getAllProductsLists = () => {
-    return new Promise((resolve, reject) => {
-        sql.query(`SELECT * FROM Products INNER JOIN Brands ON Products.brand_id = Brands.brand_id`, (error, elements) => {
-            if (error) {
-                return reject(error)
-            }
-            return resolve(elements)
-        })
-    })
-}
-
-
-const getProductByProductId = ({ product_id }) => {
-    return new Promise((resolve, reject) => {
-        sql.query(`SELECT * FROM Products WHERE product_id=${product_id}`, (error, elements) => {
-            if (error) {
-                return reject(error)
-            }
-            return resolve(elements)
-        })
-    })
-}
+    return objectReformatByKey({ keys: { brand: ['brand_id', 'brand_name'], hsn_code: ['gcc_id', 'gcc_code', 'gcc_description'], unit: ['unit_id', 'unit_name',] }, object: RowDataPacket })
+})
 
 
 module.exports = { createProduct, getAllProductsLists, getProductByProductId }

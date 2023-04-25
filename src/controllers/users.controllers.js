@@ -96,7 +96,7 @@ const getMe = asyncHandler(async (req, res) => {
     try {
         const [RowDataPacket] = await getUserById({ uid })
 
-        const userById = await _.omit(RowDataPacket, ['password','updated_at']);
+        const userById = await _.omit(RowDataPacket, ['password', 'updated_at']);
         return res.status(200).json({
             userDetails: {
                 ...userById

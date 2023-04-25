@@ -1,37 +1,17 @@
-const sql = require("../config");
+const asyncHandler = require("express-async-handler")
+const { insertQuery } = require("./utils/mutations");
+const { selectQuery } = require("./utils/queries");
 
-const createBrand = (newBrand) => {
-    return new Promise((resolve, reject) => {
-        sql.query("INSERT INTO Brands SET ?", newBrand, (err, elements) => {
-            if (err) {
-                return reject(err)
-            }
-            return resolve(newBrand)
-        })
-    })
-}
+const createBrand = asyncHandler(async (newBrand) => {
+    return await insertQuery({ queryName: "INSERT INTO Brands SET ?", values: newBrand })
+})
 
-const getAllBrandsLists = () => {
-    return new Promise((resolve, reject) => {
-        sql.query(`SELECT * FROM Brands`, (error, elements) => {
-            if (error) {
-                return reject(error)
-            }
-            return resolve(elements)
-        })
-    })
-}
+const getAllBrandsLists = asyncHandler(async () => {
+    return await selectQuery({ queryName: "SELECT * FROM Brands" })
+})
 
-const getBrandByBrandId = ({ brand_id }) => {
-    return new Promise((resolve, reject) => {
-        sql.query(`SELECT * FROM Brands WHERE brand_id=${brand_id}`, (error, elements) => {
-            if (error) {
-                return reject(error)
-            }
-            return resolve(elements)
-        })
-    })
-}
-
-
+const getBrandByBrandId = asyncHandler(async ({ brand_id }) => {
+    return await selectQuery({ queryName: `SELECT * FROM Brands WHERE brand_id=${brand_id}` })
+})
+ 
 module.exports = { createBrand, getAllBrandsLists, getBrandByBrandId }
