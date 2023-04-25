@@ -3,7 +3,6 @@ const asyncHandler = require("express-async-handler")
 require('dotenv').config()
 const _ = require("lodash");
 const jwt = require("jsonwebtoken");
-const sql = require("../config")
 const { makeRandomSting } = require("../helpers/helpers");
 const { STATUS_CODE, NUMERIC_VALUES } = require("../utils/constants");
 const { ERROR_MESSAGE } = require("../utils/errorMessage");
@@ -12,7 +11,7 @@ const { SUCCESS_MESSAGE } = require("../utils/successMessage");
 
 const userRegister = asyncHandler(async (req, res, next) => {
     const { mobile, store_name, store_type, role } = req.body
-    if (!store_name || !mobile || !role || !store_type) {
+    if (!mobile) {
         res.status(STATUS_CODE.VALIDATION_ERROR)
         throw new Error(ERROR_MESSAGE.mandatory_all_fields)
     }

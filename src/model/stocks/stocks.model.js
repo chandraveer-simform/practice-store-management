@@ -1,4 +1,3 @@
-const sql = require("../config");
 const asyncHandler = require("express-async-handler")
 const { insertQuery } = require("./utils/mutations");
 const { selectQuery } = require("./utils/queries");
