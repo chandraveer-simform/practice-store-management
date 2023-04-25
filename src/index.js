@@ -1,7 +1,7 @@
 const express = require("express")
 const bodyParser = require('body-parser')
 
-const conn = require("./config")
+const conn = require("./config/database")
 const usersRouter = require('./routes/users.routes');
 const productsRouter = require('./routes/products.routes');
 const brandsRouter = require('./routes/brands.routes');

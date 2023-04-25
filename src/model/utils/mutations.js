@@ -1,4 +1,4 @@
-const sql = require("../../config");
+const sql = require("../../config/database");
 
 const insertQuery = ({ queryName, values }) => {
     return new Promise((resolve, reject) => {

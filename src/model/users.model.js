@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler")
 const { insertQuery } = require("./utils/mutations");
 const { selectQuery } = require("./utils/queries");
-const sql = require("../config");
+const sql = require("../config/database");
 
 const createUser = asyncHandler(async (newUsers) => {
     return await insertQuery({ queryName: "INSERT INTO Users SET ?", values: newUsers })

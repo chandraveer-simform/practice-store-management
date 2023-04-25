@@ -1,4 +1,4 @@
-const sql = require("../config");
+const sql = require("../config/database");
 
 const selectSQLQuery = ({queryName}) => {
     console.log("Dd",queryName)
