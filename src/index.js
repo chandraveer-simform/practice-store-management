@@ -30,7 +30,8 @@ app.get("/", (req, res) => {
 app.use(errorHandler);
 
 // // catch 404 and forward to error handler
-app.use(function (req, res,) {
+// eslint-disable-next-line no-unused-vars
+app.use(function (req, res, next) {
     res.status(404).json({
         message: "No such route exists"
     });

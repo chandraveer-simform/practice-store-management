@@ -1,9 +1,8 @@
 const { STATUS_CODE } = require("../utils/constants");
 const { API_RES } = require("../utils/errorMessage");
-
-const errorHandler = (err, req, res, ) => {
+// eslint-disable-next-line no-unused-vars
+const errorHandler = (err, req, res, next) => {
     const statusCode = res.statusCode ? res.statusCode : STATUS_CODE.SERVER_ERROR;
-
     switch (statusCode) {
         case STATUS_CODE.VALIDATION_ERROR: res.json({
             title: API_RES?.validation.title,
@@ -42,12 +41,12 @@ const errorHandler = (err, req, res, ) => {
         });
             break;
         default:
-            console.log("No Error",err);
+            console.log("No Error", err);
             res.json({
-            title: API_RES?.server_error.title,
-            message: err.message,
-            stackTrace: err.stack,
-        });
+                title: API_RES?.server_error.title,
+                message: err.message,
+                stackTrace: err.stack,
+            });
             break;
     }
 };

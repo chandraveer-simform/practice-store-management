@@ -28,7 +28,8 @@ const compareOtp = async ({ mobile, otp }) => {
     }
 };
 
-const sendOTP = asyncHandler(async (req, res,) => {
+// eslint-disable-next-line no-unused-vars
+const sendOTP = asyncHandler(async (req, res, next) => {
     const { mobile } = req.body;
     // eslint-disable-next-line no-unsafe-optional-chaining
     const { resend } = req?.query;
@@ -73,7 +74,7 @@ const verifiyOTP = asyncHandler(async (req, res) => {
         throw new Error(ERROR_MESSAGE.mandatory_all_fields);
     }
     try {
-         await verifyOTPToProvider({ mobile, otp });
+        await verifyOTPToProvider({ mobile, otp });
         let otpRes = await compareOtp({ mobile, otp });
         otpRes = _.omit(otpRes, ["otpDetails"]);
         return res.status(200).json({
