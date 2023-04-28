@@ -6,5 +6,5 @@ const SUCCESS_MESSAGE = {
     otp_resend_success: "OTP resend successful",
     otp_verified_success: "Your mobile number has been verified successful",
     delete_success: "Records deleted successful"
-}
-module.exports = { SUCCESS_MESSAGE }
+};
+module.exports = { SUCCESS_MESSAGE };

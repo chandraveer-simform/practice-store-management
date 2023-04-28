@@ -1,7 +1,5 @@
 const jwt = require("jsonwebtoken");
 
-
-
 const createToken = async ({ tokenValue, expiresIn = "1d" }) => {
     try {
         return await jwt.sign(
@@ -14,8 +12,8 @@ const createToken = async ({ tokenValue, expiresIn = "1d" }) => {
             }
         );
     } catch (e) {
-        return e
+        return e;
     }
-}
+};
 
-module.exports = { createToken }
+module.exports = { createToken };

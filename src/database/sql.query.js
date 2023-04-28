@@ -1,7 +1,7 @@
 const sql = require("../config/database");
 
 const selectSQLQuery = ({queryName}) => {
-    console.log("Dd",queryName)
+    console.log("Dd",queryName);
 
     return new Promise((resolve, reject) => {
         sql.query(queryName, (error, elements) => {
@@ -13,4 +13,4 @@ const selectSQLQuery = ({queryName}) => {
     });
 };
 
-module.exports = { selectSQLQuery }
+module.exports = { selectSQLQuery };

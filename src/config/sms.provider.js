@@ -6,7 +6,7 @@ const { makeHttpRequest } = require("./http.request");
  * @param route : Value can be 1 for Promotional Router or 4 for Transactional Route or 106 for SendOTP
  * @param DLT_TE_ID : Issued DLT template from TRAI
  */
-module.exports = function ({ authKey, senderId, template_id, route }) {
+module.exports = function ({ authKey, senderId, route }) {
     if (authKey == null || authKey == "") {
         throw new Error("MSG91 Authorization Key not provided.");
     }
@@ -20,32 +20,22 @@ module.exports = function ({ authKey, senderId, template_id, route }) {
     }
 
     this.send = async ({ mobileNos, message }) => {
-        //with node mode :- https://docs.msg91.com/reference/sendotp
-        let url = "https://control.msg91.com/api/v5/otp?"
-
-        //with url mode :- https://msg91.com/help/how-to-resolve-the-error-otp-not-found-and-placeholder-not-found-in-message
-        // let url = "http://control.msg91.com/api/sendotp.php?"
-
+        let url = "https://control.msg91.com/api/v5/otp?";
         mobileNos = validateMobileNos(mobileNos);
         message = validateMessage(message);
 
         var isUnicode = isUnicodeString(message);
-        // With Node mode
-        // Adding support for DLT template to accommodate changes by TRAI
-        // var postUrlData = `sender=${senderId}&mobile=${mobileNos}&otp=${message}&otp_expiry=${1}&route=${route}&template_id=${template_id}`;
         var postUrlData = `template_id=&mobile=${mobileNos}&otp=${message}`;
 
-        // with url mode
-        // postUrlData = `authkey=${authKey}&sender=${senderId}&mobile=${mobileNos}&otp=${message}`
         if (isUnicode) {
             postUrlData += "&unicode=1";
         }
         var options = {
             url: `${url}${postUrlData}`,
-            method: 'POST',
+            method: "POST",
             headers: {
-                accept: 'application/json',
-                'content-type': 'application/json',
+                accept: "application/json",
+                "content-type": "application/json",
                 authKey: authKey,
             }
         };
@@ -53,7 +43,7 @@ module.exports = function ({ authKey, senderId, template_id, route }) {
     };
 
     this.resend = async ({ mobileNos, message }) => {
-        let url = "https://control.msg91.com/api/v5/otp/retry?"
+        let url = "https://control.msg91.com/api/v5/otp/retry?";
 
         mobileNos = validateMobileNos(mobileNos);
         message = validateMessage(message);
@@ -66,9 +56,9 @@ module.exports = function ({ authKey, senderId, template_id, route }) {
         }
         var options = {
             url: `${url}${postUrlData}`,
-            method: 'POST',
+            method: "POST",
             headers: {
-                accept: 'application/json',
+                accept: "application/json",
                 authKey: authKey,
             }
         };
@@ -77,7 +67,7 @@ module.exports = function ({ authKey, senderId, template_id, route }) {
 
     this.verify = async ({ mobileNos, message }) => {
 
-        let url = "https://control.msg91.com/api/v5/otp/verify?"
+        let url = "https://control.msg91.com/api/v5/otp/verify?";
 
         mobileNos = validateMobileNos(mobileNos);
         message = validateMessage(message);
@@ -90,9 +80,9 @@ module.exports = function ({ authKey, senderId, template_id, route }) {
         }
         var options = {
             url: `${url}${postUrlData}`,
-            method: 'GET',
+            method: "GET",
             headers: {
-                accept: 'application/json',
+                accept: "application/json",
                 authKey: authKey,
             }
         };
@@ -111,17 +101,17 @@ module.exports = function ({ authKey, senderId, template_id, route }) {
         var currentRoute = customRoute || route;
 
         var options = {
-            hostname: 'control.msg91.com',
+            hostname: "control.msg91.com",
             port: 80,
-            path: '/api/balance.php?authkey=' + authKey + '&type=' + currentRoute,
-            method: 'GET'
+            path: "/api/balance.php?authkey=" + authKey + "&type=" + currentRoute,
+            method: "GET"
         };
 
         makeHttpRequest(options, null, function (err, data) {
             callback(err, data);
         });
 
-    }
+    };
 
     return this;
 
@@ -137,7 +127,7 @@ function validateMobileNos(mobileNos) {
         mobileNos = mobileNos.join(",");
     }
 
-    return mobileNos
+    return mobileNos;
 }
 
 function validateMessage(message) {
