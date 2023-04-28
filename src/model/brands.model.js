@@ -3,7 +3,8 @@ const { insertQuery } = require("./utils/mutations");
 const { selectQuery } = require("./utils/queries");
 
 const createBrand = asyncHandler(async (newBrand) => {
-    return await insertQuery({ queryName: "INSERT INTO Brands SET ?", values: newBrand })
+    const { elements, data }= await insertQuery({ queryName: "INSERT INTO Brands SET ?", values: newBrand })
+    return { ...data, brand_id: elements.insertId }
 })
 
 const getAllBrandsLists = asyncHandler(async () => {

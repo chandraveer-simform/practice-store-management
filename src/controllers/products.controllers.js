@@ -5,8 +5,8 @@ const { createProduct, getProductByProductId, getAllProductsLists } = require(".
 
 // Create new Product
 const createNewProduct = asyncHandler(async (req, res, nmext) => {
-    const { product_name, brand_id } = req.body || {}
-    if (!product_name || !brand_id) {
+    const { product_name, brand } = req.body || {}
+    if (!product_name || !brand) {
         res.status(STATUS_CODE.VALIDATION_ERROR)
         throw new Error(ERROR_MESSAGE.mandatory_all_fields)
     }

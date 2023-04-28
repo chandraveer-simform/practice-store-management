@@ -29,6 +29,8 @@ const ERROR_MESSAGE = {
     user_already_exist: "This user is already in use!",
     something_wrong: "Something went wrong!",
     data_creating_error: "Some error occurred while creating.",
-    records_not_found: "Records not found."
+    records_not_found: "Records not found.",
+    otp_expired: "OTP expired!",
+    otp_invalid: "Invalid OTP!",
 }
 module.exports = { API_RES, ERROR_MESSAGE }

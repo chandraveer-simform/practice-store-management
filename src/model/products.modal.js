@@ -5,7 +5,8 @@ const { selectQuery } = require("./utils/queries");
 
 
 const createProduct = asyncHandler(async (newProduct) => {
-    return await insertQuery({ queryName: "INSERT INTO Products SET ?", values: newProduct })
+    const { elements, data }=  await insertQuery({ queryName: "INSERT INTO Products SET ?", values: newProduct })
+    return { ...data, product_id: elements.insertId }
 })
 
 const getAllProductsLists = asyncHandler(async () => {

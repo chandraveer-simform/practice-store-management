@@ -3,7 +3,8 @@ const { insertQuery } = require("./utils/mutations");
 const { selectQuery } = require("./utils/queries");
 
 const createStock = asyncHandler(async (newStock) => {
-    return await insertQuery({ queryName: "INSERT INTO Stocks SET ?", values: newStock })
+    const { elements, data }= await insertQuery({ queryName: "INSERT INTO Stocks SET ?", values: newStock })
+    return { ...data, stock_id: elements.insertId }
 })
 
 const getStockDetailsById = asyncHandler(async ({ stock_id }) => {

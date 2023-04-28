@@ -42,7 +42,12 @@ const errorHandler = (err, req, res, next) => {
         })
             break
         default:
-            console.log("No Error")
+            console.log("No Error",err)
+            res.json({
+            title: API_RES?.server_error.title,
+            message: err.message,
+            stackTrace: err.stack,
+        })
             break
     }
 }
