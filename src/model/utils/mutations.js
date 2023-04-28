@@ -23,5 +23,4 @@ const deleteQuery = ({ queryName, values }) => {
     })
 }
 
-
 module.exports = { insertQuery, deleteQuery }

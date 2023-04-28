@@ -159,5 +159,3 @@ function isUnicodeString(str) {
     }
     return false;
 }
-
-
