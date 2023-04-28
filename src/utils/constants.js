@@ -9,23 +9,23 @@ const STATUS_CODE = {
     SERVER_ERROR: 500, // When the server processes the request of the client and runs into a situation it cannot handle, it sends 500 Internal Server Error.
     BAD_GATEWAY: 502, //The server sends this code when it is acting as a proxy server and/or fetching data from an external resource and it gets an invalid response from that external source.
     SERVICE_UNAVAILABLE: 503 // This is a common server error code that you can get. It means the server might be down and therefore, 
-}
+};
 
 const STATUS_TYPE_MESSAGE = {
     SUCCESS: "success",
     ERROR: "error"
-}
+};
 
 const NUMERIC_VALUES = {
     PASSWORD_LENGHT: 5,
     PASS_SALT_ROUNDS: 11,
     OTP_LENGHT: 4,
     OTP_SALT_ROUNDS: 11,
-}
+};
 
 const KEYS_NAME = {
     AUTH_TOKEN: "auth-token",
     AUTHORIZATION: "authorization"
-}
+};
 
-module.exports = { STATUS_CODE, NUMERIC_VALUES, KEYS_NAME, STATUS_TYPE_MESSAGE  }
+module.exports = { STATUS_CODE, NUMERIC_VALUES, KEYS_NAME, STATUS_TYPE_MESSAGE  };

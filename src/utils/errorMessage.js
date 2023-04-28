@@ -17,7 +17,7 @@ const API_RES = {
     conflict_error: {
         title: "Conflict Error"
     }
-}
+};
 
 const ERROR_MESSAGE = {
     mandatory_all_fields: "All fields are mandatory!",
@@ -32,5 +32,5 @@ const ERROR_MESSAGE = {
     records_not_found: "Records not found.",
     otp_expired: "OTP expired!",
     otp_invalid: "Invalid OTP!",
-}
-module.exports = { API_RES, ERROR_MESSAGE }
+};
+module.exports = { API_RES, ERROR_MESSAGE };

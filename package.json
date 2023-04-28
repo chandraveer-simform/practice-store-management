@@ -4,6 +4,7 @@
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
     "dotenv": "^16.0.3",
+    "eslint": "^8.39.0",
     "express": "^4.18.2",
     "express-async-handler": "^1.2.0",
     "express-validator": "^6.15.0",
@@ -20,6 +21,7 @@
   "author": "chandraveer.s <chandraveer.s@simformsolutions.com>",
   "license": "MIT",
   "scripts": {
+    "lint:fix": "eslint --fix ./src/**/*.js",
     "start": "nodemon src/index.js"
   }
 }

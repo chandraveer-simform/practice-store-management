@@ -1,5 +1,5 @@
 const usersQuery ={
    
-}
+};
 
-module.exports ={usersQuery}
+module.exports ={usersQuery};
