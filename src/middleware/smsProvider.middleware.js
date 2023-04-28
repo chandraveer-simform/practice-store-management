@@ -54,6 +54,4 @@ const verifyOTPToProvider = async ({ mobile, otp }) => {
     }
 }
 
-
-
 module.exports = { sendOTPToProvider, verifyOTPToProvider }
