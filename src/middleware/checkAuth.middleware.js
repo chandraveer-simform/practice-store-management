@@ -6,7 +6,6 @@ const { ERROR_MESSAGE } = require("../utils/errorMessage");
 
 module.exports = asyncHandler((req, res, next) => {
   const bearerHeader = req.header(KEYS_NAME.AUTHORIZATION);
- 
   if (!bearerHeader) {
     res.status(STATUS_CODE.UNAUTHORIZED);
     throw new Error(ERROR_MESSAGE.unauthorized_access_denied);
@@ -20,7 +19,6 @@ module.exports = asyncHandler((req, res, next) => {
     next();
   } catch (err) {
     res.status(STATUS_CODE.UNAUTHORIZED);
-    throw new Error(ERROR_MESSAGE.unauthorized_auth_token_denied);
-
+    throw new Error(err?.message ||ERROR_MESSAGE.unauthorized_auth_token_denied);
   }
 });

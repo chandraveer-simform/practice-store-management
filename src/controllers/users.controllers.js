@@ -27,7 +27,8 @@ const createRegisterUser = async ({ values }) => {
     }
 };
 
-const signupWitOTP = asyncHandler(async (req, res) => {
+// eslint-disable-next-line no-unused-vars
+const signupWitOTP = asyncHandler(async (req, res, next) => {
     const { mobile, otp } = req.body;
     if (!mobile || !otp) {
         res.status(STATUS_CODE.VALIDATION_ERROR);
@@ -65,7 +66,8 @@ const signupWitOTP = asyncHandler(async (req, res) => {
     }
 });
 
-const signup = asyncHandler(async (req, res) => {
+// eslint-disable-next-line no-unused-vars
+const signup = asyncHandler(async (req, res, next) => {
     const { mobile } = req.body;
     if (!mobile) {
         res.status(STATUS_CODE.VALIDATION_ERROR);
@@ -98,7 +100,8 @@ const signup = asyncHandler(async (req, res) => {
 });
 
 
-const userLogin = asyncHandler(async (req, res) => {
+// eslint-disable-next-line no-unused-vars
+const userLogin = asyncHandler(async (req, res, next) => {
     const { userName, password } = req.body;
     if (!userName || !password) {
         res.status(STATUS_CODE.UNAUTHORIZED);

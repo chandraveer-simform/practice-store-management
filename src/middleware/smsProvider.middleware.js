@@ -43,7 +43,6 @@ const verifyOTPToProvider = async ({ mobile, otp }) => {
     try {
         const res = await verify({ mobileNos: mobile, message: otp });
         const { message,  type } = res;
-        console.log("verify", res);
         if (type === STATUS_TYPE_MESSAGE.SUCCESS) {
             return { message: message };
         }

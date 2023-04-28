@@ -1,8 +1,6 @@
 const sql = require("../config/database");
 
 const selectSQLQuery = ({queryName}) => {
-    console.log("Dd",queryName);
-
     return new Promise((resolve, reject) => {
         sql.query(queryName, (error, elements) => {
             if (error) {

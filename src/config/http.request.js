@@ -1,7 +1,6 @@
 const axios = require("axios");
 const { ERROR_MESSAGE } = require("../utils/errorMessage"); 
 const makeHttpRequest = ({ options }) => {
-    console.log(options );
     return axios
         .request(options)
         .then(function (response) {
