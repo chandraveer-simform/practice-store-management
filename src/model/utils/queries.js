@@ -1,4 +1,5 @@
 const sql = require("../../config/database");
+const { getJson } = require("../../helpers/helpers");
 
 
 const selectQuery = ({ queryName }) => {
@@ -7,7 +8,7 @@ const selectQuery = ({ queryName }) => {
             if (error) {
                 return reject(error)
             }
-            return resolve(elements)
+            return resolve(getJson(elements))
         })
     })
 }

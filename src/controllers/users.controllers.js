@@ -2,15 +2,70 @@ const bcrypt = require("bcrypt")
 const asyncHandler = require("express-async-handler")
 require('dotenv').config()
 const _ = require("lodash");
-const jwt = require("jsonwebtoken");
-const { makeRandomSting } = require("../helpers/helpers");
+const { makeRandomSting, otpGenerator } = require("../helpers/helpers");
 const { STATUS_CODE, NUMERIC_VALUES } = require("../utils/constants");
 const { ERROR_MESSAGE } = require("../utils/errorMessage");
 const { checkExistUser, createUser, getUserById, getAllUserLists } = require("../model/users.model");
 const { SUCCESS_MESSAGE } = require("../utils/successMessage");
+const { createToken } = require("../middleware/tokenProvider.middleware");
+const { compareOtp, deleteOtp } = require("./otp.controllers");
 
-const userRegister = asyncHandler(async (req, res, next) => {
-    const { mobile, store_name, store_type, role } = req.body
+const createRegisterUser = async ({ values }) => {
+    try {
+        const pass = makeRandomSting(NUMERIC_VALUES.PASSWORD_LENGHT)
+        const hash = bcrypt.hashSync(pass, NUMERIC_VALUES.PASS_SALT_ROUNDS)
+        const res = await createUser({
+            ...values,
+            password: hash
+        })
+        let user = await _.omit(res, ['password', 'created_at', 'updated_at']);
+        return { ...user, password: pass }
+    } catch (err) {
+        res.status(STATUS_CODE.SERVER_ERROR)
+        throw new Error(err.message || ERROR_MESSAGE.data_creating_error)
+    }
+}
+
+const signupWitOTP = asyncHandler(async (req, res, next) => {
+    const { mobile, otp } = req.body
+    if (!mobile || !otp) {
+        res.status(STATUS_CODE.VALIDATION_ERROR)
+        throw new Error(ERROR_MESSAGE.otp_invalid)
+    }
+    try {
+        const result = await checkExistUser(mobile)
+        if (0<result.length) {
+            throw new Error(ERROR_MESSAGE.user_already_exist)
+        } else {
+            // username is available   
+            try {
+                let { otpDetails } = await compareOtp({ mobile, otp })
+                await deleteOtp({ mobile }) 
+                let result = await createRegisterUser({ values: { name: otpDetails.name, mobile: otpDetails.mobile } })
+                const token = await createToken(tokenValue = {
+                    userId: result.uid,
+                    mobile: result.mobile,
+                })
+                result = await _.omit(result, ['password']);
+                res.send({
+                    userDetails: {
+                        ...result
+                    },
+                    token: token
+                });
+            } catch (err) {
+                res.status(STATUS_CODE.SERVER_ERROR)
+                throw new Error(err.message || ERROR_MESSAGE.data_creating_error)
+            }
+        }
+    } catch (err) {
+        res.status(STATUS_CODE.SERVER_ERROR)
+        throw new Error(err.message || ERROR_MESSAGE.something_wrong)
+    }
+})
+
+const signup = asyncHandler(async (req, res, next) => {
+    const { mobile } = req.body
     if (!mobile) {
         res.status(STATUS_CODE.VALIDATION_ERROR)
         throw new Error(ERROR_MESSAGE.mandatory_all_fields)
@@ -20,14 +75,16 @@ const userRegister = asyncHandler(async (req, res, next) => {
         if (result.length) {
             throw new Error(ERROR_MESSAGE.user_already_exist)
         } else {
-            // username is available
-            const hash = bcrypt.hashSync(makeRandomSting(NUMERIC_VALUES.PASSWORD_LENGHT), NUMERIC_VALUES.PASS_SALT_ROUNDS)
+            // username is available 
             try {
-                let result = await createUser({
-                    ...req.body,
-                    password: hash
-                })
-                res.send(result);
+                let result = await createRegisterUser({ values: { ...req.body } }) 
+                result = await _.omit(result, ['password']);
+                res.send({
+                    message: SUCCESS_MESSAGE.sign_up_success,
+                    userDetails: {
+                        ...result
+                    }
+                });
             } catch (err) {
                 res.status(STATUS_CODE.SERVER_ERROR)
                 throw new Error(err.message || ERROR_MESSAGE.data_creating_error)
@@ -51,17 +108,10 @@ const userLogin = asyncHandler(async (req, res, next) => {
         if (user.length) {
             const hash = await bcrypt.compare(password, user[0].password)
             if (hash) {
-                const token = await jwt.sign(
-                    {
-                        userId: user[0].uid,
-                        mobile: user[0].mobile,
-                        email: user[0].email,
-                    },
-                    process.env.jwtSecret,
-                    {
-                        expiresIn: "1d",
-                    }
-                );
+                const token = await createToken(tokenValue = {
+                    userId: user[0].uid,
+                    mobile: user[0].mobile,
+                })
                 return res.status(200).json({
                     message: SUCCESS_MESSAGE.auth_success,
                     userDetails: {
@@ -122,7 +172,9 @@ const getAllUsers = asyncHandler(async (req, res) => {
 
 module.exports = {
     userLogin,
-    userRegister,
+    createRegisterUser,
+    signup,
+    signupWitOTP,
     getMe,
     getAllUsers
 };
