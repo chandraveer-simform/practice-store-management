@@ -1,3 +1,16 @@
+const NUMERIC_VALUES = {
+    PASSWORD_LENGHT: 5,
+    PASS_SALT_ROUNDS: 11,
+    OTP_LENGHT: 4,
+    OTP_SALT_ROUNDS: 11,
+};
+
+const USER_ROLE = {
+    OWNER: 1,
+    SUPER_ADMIN: 2,
+    ADMIN: 3
+};
+
 const STATUS_CODE = {
     SUCCESS: 200, // ok - This response status code indicates that our request was successful.
     CREATED_SUCCESS: 201, // The 201 Created response code is returned with the newly created resource as the request body. 
@@ -16,16 +29,13 @@ const STATUS_TYPE_MESSAGE = {
     ERROR: "error"
 };
 
-const NUMERIC_VALUES = {
-    PASSWORD_LENGHT: 5,
-    PASS_SALT_ROUNDS: 11,
-    OTP_LENGHT: 4,
-    OTP_SALT_ROUNDS: 11,
-};
-
 const KEYS_NAME = {
     AUTH_TOKEN: "auth-token",
     AUTHORIZATION: "authorization"
 };
 
-module.exports = { STATUS_CODE, NUMERIC_VALUES, KEYS_NAME, STATUS_TYPE_MESSAGE  };
+const PATTERNS = {
+    UNDERSCORE: "/_/g"
+};
+
+module.exports = { NUMERIC_VALUES, USER_ROLE, STATUS_CODE, KEYS_NAME, STATUS_TYPE_MESSAGE, PATTERNS };

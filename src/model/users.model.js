@@ -4,7 +4,7 @@ const { selectQuery } = require("./utils/queries");
 const sql = require("../config/database");
 
 const createUser = asyncHandler(async (newUsers) => {
-    const { elements, data } =  await insertQuery({ queryName: "INSERT INTO Users SET ?", values: newUsers });
+    const { elements, data } = await insertQuery({ queryName: "INSERT INTO Users SET ?", values: newUsers });
     return { ...data, uid: elements.insertId };
 });
 

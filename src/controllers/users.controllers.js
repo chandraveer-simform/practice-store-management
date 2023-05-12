@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 /* eslint-disable no-undef */
 const bcrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
@@ -8,7 +9,7 @@ const { STATUS_CODE, NUMERIC_VALUES } = require("../utils/constants");
 const { ERROR_MESSAGE } = require("../utils/errorMessage");
 const { checkExistUser, createUser, getUserById, getAllUserLists } = require("../model/users.model");
 const { SUCCESS_MESSAGE } = require("../utils/successMessage");
-const { createToken } = require("../middleware/tokenProvider.middleware");
+const { createToken, getUserDataByToken } = require("../middleware/tokenProvider.middleware");
 const { compareOtp, deleteOtp } = require("./otp.controllers");
 
 const createRegisterUser = async ({ values }) => {
@@ -46,6 +47,7 @@ const signupWitOTP = asyncHandler(async (req, res, next) => {
                 let result = await createRegisterUser({ values: { name: otpDetails.name, mobile: otpDetails.mobile } });
                 const token = await createToken(tokenValue = {
                     userId: result.uid,
+                    role: result.role,
                     mobile: result.mobile,
                 });
                 result = await _.omit(result, ["password"]);
@@ -68,8 +70,8 @@ const signupWitOTP = asyncHandler(async (req, res, next) => {
 
 // eslint-disable-next-line no-unused-vars
 const signup = asyncHandler(async (req, res, next) => {
-    const { mobile } = req.body;
-    if (!mobile) {
+    const { mobile, role } = req.body;
+    if (!mobile || !role) {
         res.status(STATUS_CODE.VALIDATION_ERROR);
         throw new Error(ERROR_MESSAGE.mandatory_all_fields);
     }
@@ -109,12 +111,16 @@ const userLogin = asyncHandler(async (req, res, next) => {
     }
     try {
         const user = await checkExistUser(userName);
+        console.log("user", user);
         if (user.length) {
             const hash = await bcrypt.compare(password, user[0].password);
             if (hash) {
-                const token = await createToken(tokenValue = {
-                    userId: user[0].uid,
-                    mobile: user[0].mobile,
+                const token = await createToken({
+                    tokenValue: {
+                        userId: user[0].uid,
+                        role: user[0].role,
+                        mobile: user[0].mobile,
+                    }
                 });
                 return res.status(200).json({
                     message: SUCCESS_MESSAGE.auth_success,
@@ -145,8 +151,9 @@ const userLogin = asyncHandler(async (req, res, next) => {
 });
 
 const getMe = asyncHandler(async (req, res) => {
-    const uid = req.user?.userId;
     try {
+        const { data } = await getUserDataByToken({ req, res });
+        const uid = data.userId;
         const [RowDataPacket] = await getUserById({ uid });
 
         const userById = await _.omit(RowDataPacket, ["password", "updated_at"]);

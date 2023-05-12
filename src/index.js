@@ -6,12 +6,14 @@ const usersRouter = require("./routes/users.routes");
 const productsRouter = require("./routes/products.routes");
 const brandsRouter = require("./routes/brands.routes");
 
+const { authUserAccess } = require("./middleware/checkAuth.middleware");
 const errorHandler = require("./middleware/errorHandler.middleware");
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // app.use(express.json())
+// app.use(authUserAccess);
 
 app.use("/users", usersRouter);
 app.use("/products", productsRouter);
