@@ -33,5 +33,4 @@ class commonHelper {
     }
 }
 
-
 module.exports = new commonHelper
