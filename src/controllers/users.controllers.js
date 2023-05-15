@@ -11,10 +11,12 @@ const { checkExistUser, createUser, getUserById, getAllUserLists } = require("..
 const { SUCCESS_MESSAGE } = require("../utils/successMessage");
 const { createToken, getUserDataByToken } = require("../middleware/tokenProvider.middleware");
 const { compareOtp, deleteOtp } = require("./otp.controllers");
+const { getStoresByUserId } = require("../model/stores.modal");
 
 const createRegisterUser = async ({ values }) => {
     try {
         const pass = makeRandomSting(NUMERIC_VALUES.PASSWORD_LENGHT);
+        console.log("pass", pass);
         const hash = bcrypt.hashSync(pass, NUMERIC_VALUES.PASS_SALT_ROUNDS);
         const res = await createUser({
             ...values,
@@ -70,8 +72,8 @@ const signupWitOTP = asyncHandler(async (req, res, next) => {
 
 // eslint-disable-next-line no-unused-vars
 const signup = asyncHandler(async (req, res, next) => {
-    const { mobile, role } = req.body;
-    if (!mobile || !role) {
+    const { mobile } = req.body;
+    if (!mobile) {
         res.status(STATUS_CODE.VALIDATION_ERROR);
         throw new Error(ERROR_MESSAGE.mandatory_all_fields);
     }
@@ -111,7 +113,6 @@ const userLogin = asyncHandler(async (req, res, next) => {
     }
     try {
         const user = await checkExistUser(userName);
-        console.log("user", user);
         if (user.length) {
             const hash = await bcrypt.compare(password, user[0].password);
             if (hash) {
@@ -122,19 +123,10 @@ const userLogin = asyncHandler(async (req, res, next) => {
                         mobile: user[0].mobile,
                     }
                 });
+                const userById = await getUserDataById({ uid: user[0].uid });
                 return res.status(200).json({
                     message: SUCCESS_MESSAGE.auth_success,
-                    userDetails: {
-                        uid: user[0].uid,
-                        first_name: user[0].first_name,
-                        last_name: user[0].last_name,
-                        mobile: user[0].mobile,
-                        email: user[0].email,
-                        age: user[0].age,
-                        store_name: user[0].store_name,
-                        store_type: user[0].store_type,
-                        role: user[0].role,
-                    },
+                    ...userById,
                     token: token,
                 });
             } else {
@@ -150,18 +142,29 @@ const userLogin = asyncHandler(async (req, res, next) => {
     }
 });
 
+const getUserDataById = async ({ uid }) => {
+    const [RowDataPacket] = await getUserById({ uid });
+    const stores = await getStoresByUserId({ uid });
+    const userById = await _.omit(RowDataPacket, ["password", "updated_at"]);
+    return {
+        userDetails: {
+            ...userById
+        },
+        stores: stores
+    };
+};
+
 const getMe = asyncHandler(async (req, res) => {
     try {
         const { data } = await getUserDataByToken({ req, res });
         const uid = data.userId;
-        const [RowDataPacket] = await getUserById({ uid });
-
-        const userById = await _.omit(RowDataPacket, ["password", "updated_at"]);
+        const userById = await getUserDataById({ uid });
         return res.status(200).json({
             userDetails: {
                 ...userById
             }
         });
+
     } catch (err) {
         res.status(STATUS_CODE.FORBIDDEN);
         throw new Error(err.message || ERROR_MESSAGE.something_wrong);

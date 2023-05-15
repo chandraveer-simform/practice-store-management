@@ -1,3 +1,4 @@
+/***************** Constant Numeric values **************/
 const NUMERIC_VALUES = {
     PASSWORD_LENGHT: 5,
     PASS_SALT_ROUNDS: 11,
@@ -5,12 +6,17 @@ const NUMERIC_VALUES = {
     OTP_SALT_ROUNDS: 11,
 };
 
+/***************** User Role types **************/
 const USER_ROLE = {
     OWNER: 1,
     SUPER_ADMIN: 2,
-    ADMIN: 3
+    ADMIN: 3,
+    STORES_OWNER: 5,
+    STORES_SUPER_ADMIN: 6,
+    STORES_ADMIN: 7.
 };
 
+/***************** API status code **************/
 const STATUS_CODE = {
     SUCCESS: 200, // ok - This response status code indicates that our request was successful.
     CREATED_SUCCESS: 201, // The 201 Created response code is returned with the newly created resource as the request body. 
@@ -24,18 +30,29 @@ const STATUS_CODE = {
     SERVICE_UNAVAILABLE: 503 // This is a common server error code that you can get. It means the server might be down and therefore, 
 };
 
+/***************** API methods **************/
+const API_METHOD = {
+    GET: "GET",
+    POST: "POST",
+    PUT: "PUT",
+    DELETE: "DELETE"
+};
+
+/***************** API status message type **************/
 const STATUS_TYPE_MESSAGE = {
     SUCCESS: "success",
     ERROR: "error"
 };
 
+/***************** Network Keys **************/
 const KEYS_NAME = {
     AUTH_TOKEN: "auth-token",
     AUTHORIZATION: "authorization"
 };
 
+/***************** Patterns **************/
 const PATTERNS = {
     UNDERSCORE: "/_/g"
 };
 
-module.exports = { NUMERIC_VALUES, USER_ROLE, STATUS_CODE, KEYS_NAME, STATUS_TYPE_MESSAGE, PATTERNS };
+module.exports = { NUMERIC_VALUES, USER_ROLE, STATUS_CODE, KEYS_NAME, API_METHOD, STATUS_TYPE_MESSAGE, PATTERNS };

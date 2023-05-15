@@ -17,7 +17,9 @@ const checkExistUser = asyncHandler(async (data) => {
 });
 
 const getUserById = asyncHandler(async ({ uid }) => {
-    return await selectQuery({ queryName: `SELECT * FROM Users WHERE uid=${uid}` });
+    return await selectQuery({
+        queryName: `SELECT * FROM Users as U WHERE U.uid=${uid}`
+    });
 });
 
 const getAllUserLists = asyncHandler(async () => {

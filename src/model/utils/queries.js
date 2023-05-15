@@ -1,7 +1,7 @@
 const sql = require("../../config/database");
 const { getJson } = require("../../helpers/helpers");
 
-
+/***************** RDBMS SELECT QUERY **************/
 const selectQuery = ({ queryName }) => {
     return new Promise((resolve, reject) => {
         sql.query(queryName, (error, elements) => {
