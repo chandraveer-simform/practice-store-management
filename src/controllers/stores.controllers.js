@@ -72,4 +72,5 @@ module.exports = {
     createNewStore,
     getStoreById,
     getStoreByUserId
+    
 };
