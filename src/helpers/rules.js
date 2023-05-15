@@ -2,7 +2,7 @@
 
 class RulesMethod {
     // URL's
-    URLStringToArray({ str, pattern }) { 
+    URLStringToArray({ str, pattern }) {
         return str.split(pattern);
     }
 
@@ -15,6 +15,10 @@ class RulesMethod {
     GenerateSinglePattarn({ value }) {
         return `/${value}/g`;
     }
+
+    // Boolean Method
+    //Pattarn 
+    isArrayBoolean = (value) => value?.length > 0 ? true : false;
 }
 
 module.exports = new RulesMethod;
