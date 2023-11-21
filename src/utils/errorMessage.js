@@ -24,6 +24,7 @@ const ERROR_MESSAGE = {
     unauthorized_invalid_login: "Invalid username/password!",
     unauthorized_invalid_user: "Invalid username!",
     unauthorized_invalid_pass: "Invalid password!",
+    unauthorized_access_not_allowed: "Access Denied!, User does not have access privileges",
     unauthorized_access_denied: "Access Denied!, no token entered",
     unauthorized_auth_token_denied: "auth failed, check auth-token222",
     user_already_exist: "This user is already in use!",
